@@ -1,6 +1,7 @@
 package com.example.myapp4;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText usernameEditText, passwordEditText;
-    private Button registerButton;
+    private Button registerButton, backButton;
     private DatabaseHelper dbHelper;
 
     @Override
@@ -25,6 +26,7 @@ public class RegisterActivity extends AppCompatActivity {
         usernameEditText = findViewById(R.id.usernameEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         registerButton = findViewById(R.id.registerButton);
+        backButton = findViewById(R.id.backButton);
 
         // 初始化数据库助手
         dbHelper = new DatabaseHelper(this);
@@ -52,6 +54,13 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "注册失败", Toast.LENGTH_SHORT).show();
                 }
             }
+        });
+
+        // 返回按钮点击事件
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish(); // 结束当前活动
         });
     }
 }
