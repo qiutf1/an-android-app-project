@@ -41,7 +41,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="20dp"
         android:layout_marginStart="20dp" />
-
+    <!-- 密码输入框 -->
     <!-- 密码输入框 -->
     <EditText
         android:id="@+id/passwordEditText"
