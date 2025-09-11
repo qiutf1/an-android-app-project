@@ -7,6 +7,20 @@
     android:padding="16dp"
     tools:context=".RegisterActivity">
 
+    <!-- 头像选择 -->
+    <ImageView
+        android:id="@+id/avatarImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ic_avatar_default"
+        android:contentDescription="头像选择"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp"
+        android:clickable="true"
+        android:focusable="true"/>
+
     <!-- 用户名标签 -->
     <TextView
         android:id="@+id/usernameLabel"
@@ -15,9 +29,9 @@
         android:text="用户名"
         android:textSize="16sp"
         android:textColor="#333333"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/avatarImageView"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="20dp"
         android:layout_marginStart="20dp" />
 
     <!-- 用户名输入框 -->
@@ -103,5 +117,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="10dp" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

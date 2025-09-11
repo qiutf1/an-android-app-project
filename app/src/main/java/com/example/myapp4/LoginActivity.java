@@ -17,7 +17,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameEditText, passwordEditText;
     private Button loginButton, registerButton;
-    private ImageView avatarImageView, eyeImageView;
+    private ImageView eyeImageView;
     private ProgressBar progressBar;
     private String username, password;
     private DatabaseHelper dbHelper;
@@ -31,7 +31,6 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.passwordEditText);
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
-        avatarImageView = findViewById(R.id.avatarImageView);
         progressBar = findViewById(R.id.progressBar);
         eyeImageView = findViewById(R.id.eyeImageView);
 
@@ -83,13 +82,6 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // 头像选择事件
-        avatarImageView.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setType("image/*");
-            startActivityForResult(intent, 1);
-        });
-
         // 眼睛图标切换明文和密文
         eyeImageView.setOnClickListener(v -> {
             if (passwordEditText.getInputType() == (android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
@@ -103,15 +95,5 @@ public class LoginActivity extends AppCompatActivity {
             }
             passwordEditText.setSelection(passwordEditText.getText().length()); // 保持光标位置
         });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            if (data != null) {
-                avatarImageView.setImageURI(data.getData());
-            }
-        }
     }
 }
