@@ -15,6 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApp4">
         <activity
+            android:name=".StatsFragment"
+            android:exported="false" />
+        <activity
+            android:name=".LedgerFragment"
+            android:exported="false" />
+        <activity
+            android:name=".RecordFragment"
+            android:exported="false" />
+        <activity
             android:name=".AvatarSelectionActivity"
             android:exported="false" />
         <activity
