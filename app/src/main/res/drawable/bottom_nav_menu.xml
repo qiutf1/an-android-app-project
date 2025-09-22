@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/nav_record"
-        android:icon="@drawable/ic_record"
-        android:title="记账"/>
-    <item
-        android:id="@+id/nav_ledger"
-        android:icon="@drawable/ic_ledger"
-        android:title="账本"/>
-    <item
-        android:id="@+id/nav_stats"
-        android:icon="@drawable/ic_stats"
-        android:title="统计"/>
+    <item android:id="@+id/nav_record" android:icon="@drawable/ic_record" android:title="记账"/>
+    <item android:id="@+id/nav_ledger" android:icon="@drawable/ic_ledger" android:title="账本"/>
+    <item android:id="@+id/nav_stats" android:icon="@drawable/ic_stats" android:title="统计"/>
 </menu>

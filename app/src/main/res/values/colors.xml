@@ -4,4 +4,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="purple_500">#7B1FA2</color>
 </resources>
