@@ -68,14 +68,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // 插入用户（注册）
-    public long insertUser(String username, String password) {
+    public long insertUser(String username, String password, int avatarResId) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues v = new ContentValues();
         v.put(COLUMN_USERNAME, username);
         v.put(COLUMN_PASSWORD, password);
-        v.put(COLUMN_AVATAR, "avatar_default");
+        v.put(COLUMN_AVATAR, String.valueOf(avatarResId)); // 存储头像资源 ID
         return db.insert(TABLE_USERS, null, v);
     }
+
 
     public boolean isUserExists(String username) {
         SQLiteDatabase db = getReadableDatabase();
