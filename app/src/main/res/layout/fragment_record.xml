@@ -1,93 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="12dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <!-- 金额 -->
-    <EditText
-        android:id="@+id/etAmount"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:hint="金额"
-        android:inputType="numberDecimal"/>
-
-    <!-- 类型 & 分类 -->
+    <!-- 顶部栏 -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:orientation="horizontal"
-        android:layout_marginTop="8dp">
-        <Spinner
-            android:id="@+id/spType"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="48dp" />
+        android:padding="12dp"
+        android:background="@color/purple_200">
 
-        <Spinner
-            android:id="@+id/spCategory"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="48dp"
-            android:layout_marginStart="8dp" />
-    </LinearLayout>
-
-    <!-- 日期选择 -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp">
         <TextView
-            android:id="@+id/tvDate"
             android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_height="48dp"
+            android:text="思思记账"
+            android:textSize="20sp"
+            android:textStyle="bold"
             android:gravity="center_vertical"
-            android:text="日期" />
-        <Button
-            android:id="@+id/btnPickDate"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:text="选择日期" />
+            android:textColor="@android:color/white"/>
+
+        <ImageView
+            android:id="@+id/ivAvatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_avatar_default"
+            android:scaleType="centerCrop"
+            android:background="@drawable/circle_background"
+            android:padding="2dp"/>
     </LinearLayout>
 
-    <!-- 备注 -->
-    <EditText
-        android:id="@+id/etNote"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="备注"
-        android:inputType="textMultiLine"
-        android:imeOptions="actionDone"
-        android:gravity="top|start"
-        android:lines="3"
-        android:layout_marginTop="8dp"/>
-
-
-    <!-- 保存按钮 -->
-    <Button
-        android:id="@+id/btnSave"
+    <!-- 分类 Tab -->
+    <LinearLayout
+        android:id="@+id/filterTabs"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:text="保存"
-        android:layout_marginTop="10dp"/>
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="#F5F5F5">
 
-    <!-- 分隔 -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#DDDDDD"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="8dp"/>
+        <TextView
+            android:id="@+id/tabAll"
+            style="@style/TabItemStyle"
+            android:text="全部"/>
 
-    <!-- 列表（使用 ListView 与 RecordAdapter） -->
+        <TextView
+            android:id="@+id/tabExpense"
+            style="@style/TabItemStyle"
+            android:text="支出"/>
+
+        <TextView
+            android:id="@+id/tabIncome"
+            style="@style/TabItemStyle"
+            android:text="收入"/>
+    </LinearLayout>
+
+    <!-- 账单列表 -->
     <ListView
         android:id="@+id/lvRecords"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:divider="@android:color/darker_gray"
-        android:dividerHeight="1dp" />
+        android:divider="@android:color/transparent"
+        android:dividerHeight="8dp"
+        android:padding="8dp"/>
+
+    <!-- 悬浮按钮 -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add"
+        app:backgroundTint="@color/purple_200"/>
 </LinearLayout>

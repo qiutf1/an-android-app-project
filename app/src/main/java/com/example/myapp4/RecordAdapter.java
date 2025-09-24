@@ -4,72 +4,89 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.TextView;
-
+import android.widget.*;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class RecordAdapter extends BaseAdapter {
     private Context context;
     private List<Record> recordList;
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+    private LayoutInflater inflater;
 
     public RecordAdapter(Context context, List<Record> recordList) {
         this.context = context;
         this.recordList = recordList;
-    }
-
-    public void setRecords(List<Record> newRecords) {
-        this.recordList = newRecords;
-        notifyDataSetChanged();
+        this.inflater = LayoutInflater.from(context);
     }
 
     @Override
-    public int getCount() {
-        return recordList == null ? 0 : recordList.size();
-    }
+    public int getCount() { return recordList.size(); }
 
     @Override
-    public Object getItem(int position) {
-        return recordList.get(position);
-    }
+    public Object getItem(int position) { return recordList.get(position); }
 
     @Override
-    public long getItemId(int position) {
-        return recordList.get(position).getId();
-    }
+    public long getItemId(int position) { return recordList.get(position).getId(); }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder vh;
+        ViewHolder h;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_record, parent, false);
-            vh = new ViewHolder();
-            vh.tvAmount = convertView.findViewById(R.id.tvAmount);
-            vh.tvType = convertView.findViewById(R.id.tvType);
-            vh.tvCategory = convertView.findViewById(R.id.tvCategory);
-            vh.tvDate = convertView.findViewById(R.id.tvDate);
-            vh.tvNote = convertView.findViewById(R.id.tvNote);
-            convertView.setTag(vh);
+            convertView = inflater.inflate(R.layout.item_record, parent, false);
+            h = new ViewHolder();
+            h.ivCategory = convertView.findViewById(R.id.ivCategory);
+            h.tvNoteOrCategory = convertView.findViewById(R.id.tvNoteOrCategory);
+            h.tvDate = convertView.findViewById(R.id.tvDate);
+            h.tvAmount = convertView.findViewById(R.id.tvAmount);
+            convertView.setTag(h);
         } else {
-            vh = (ViewHolder) convertView.getTag();
+            h = (ViewHolder) convertView.getTag();
         }
 
         Record r = recordList.get(position);
-        vh.tvAmount.setText(String.format(Locale.getDefault(), "金额: %.2f", r.getAmount()));
-        vh.tvType.setText("类型: " + (r.getType() == null ? "" : r.getType()));
-        vh.tvCategory.setText("类别: " + (r.getCategory() == null ? "" : r.getCategory()));
-        vh.tvNote.setText("备注: " + (r.getNote() == null ? "" : r.getNote()));
-        String dateStr = sdf.format(new Date(r.getTimestamp()));
-        vh.tvDate.setText("日期: " + dateStr);
+
+        // 显示备注或类别
+        h.tvNoteOrCategory.setText(r.getNote().isEmpty() ? r.getCategory() : r.getNote());
+
+        // 日期
+        String dateStr = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                .format(new Date(r.getTimestamp()));
+        h.tvDate.setText(dateStr);
+
+        // 金额
+        if ("支出".equals(r.getType())) {
+            h.tvAmount.setText("-" + r.getAmount());
+            h.tvAmount.setTextColor(0xFFE91E63); // 红色
+        } else {
+            h.tvAmount.setText("+" + r.getAmount());
+            h.tvAmount.setTextColor(0xFF4CAF50); // 绿色
+        }
+
+        // 类别图标
+        int iconRes = getCategoryIcon(r.getCategory());
+        h.ivCategory.setImageResource(iconRes);
 
         return convertView;
     }
 
+    private int getCategoryIcon(String category) {
+        switch (category) {
+            case "工资": return R.drawable.ic_category_salary;
+            case "餐饮": return R.drawable.ic_category_food;
+            case "交通": return R.drawable.ic_category_transport;
+            case "购物": return R.drawable.ic_category_shopping;
+            case "娱乐": return R.drawable.ic_category_entertainment;
+            default: return R.drawable.ic_category_shopping;
+        }
+    }
+
+    public void setRecords(List<Record> list) {
+        this.recordList = list;
+        notifyDataSetChanged();
+    }
+
     static class ViewHolder {
-        TextView tvAmount, tvType, tvCategory, tvDate, tvNote;
+        ImageView ivCategory;
+        TextView tvNoteOrCategory, tvDate, tvAmount;
     }
 }
