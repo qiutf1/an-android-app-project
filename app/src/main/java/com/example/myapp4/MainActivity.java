@@ -18,25 +18,41 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        String username = getIntent().getStringExtra("username");
+
         bottomNavigation = findViewById(R.id.bottomNavigation);
 
-        if (savedInstanceState == null) {
-            loadFragment(new RecordFragment());
-        }
+        // 默认加载“记账”页面，并传递用户名
+        loadFragment(new RecordFragment(), username);
 
         bottomNavigation.setOnItemSelectedListener(item -> {
+            Fragment fragment = null;
             int id = item.getItemId();
-            Fragment f = null;
-            if (id == R.id.nav_record) f = new RecordFragment();
-            else if (id == R.id.nav_ledger) f = new LedgerFragment();
-            else if (id == R.id.nav_stats) f = new StatsFragment();
 
-            if (f != null) {
-                loadFragment(f);
+            if (id == R.id.nav_record) {
+                fragment = new RecordFragment();
+            } else if (id == R.id.nav_ledger) {
+                fragment = new LedgerFragment();
+            } else if (id == R.id.nav_stats) {
+                fragment = new StatsFragment();
+            }
+
+            if (fragment != null) {
+                loadFragment(fragment, username);
                 return true;
             }
             return false;
         });
+    }
+
+    private void loadFragment(Fragment fragment, String username) {
+        Bundle bundle = new Bundle();
+        bundle.putString("username", username);
+        fragment.setArguments(bundle);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentContainer, fragment)
+                .commit();
     }
 
     private void loadFragment(Fragment fragment) {

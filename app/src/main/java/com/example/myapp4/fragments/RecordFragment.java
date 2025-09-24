@@ -7,8 +7,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -29,7 +27,7 @@ public class RecordFragment extends Fragment {
     private Spinner spType, spCategory;
     private TextView tvDate;
     private Button btnPickDate, btnSave;
-    private RecyclerView rvRecords;
+    private ListView lvRecords;
     private RecordAdapter adapter;
     private DatabaseHelper dbHelper;
     private long selectedTimestamp = System.currentTimeMillis();
@@ -49,15 +47,15 @@ public class RecordFragment extends Fragment {
         tvDate = v.findViewById(R.id.tvDate);
         btnPickDate = v.findViewById(R.id.btnPickDate);
         btnSave = v.findViewById(R.id.btnSave);
-        rvRecords = v.findViewById(R.id.rvRecords);
+        lvRecords = v.findViewById(R.id.lvRecords);
 
         dbHelper = new DatabaseHelper(requireContext());
 
-        // 读取登录用户名
+        // 读取登录用户名（使用 SharedPreferences 存储的 logged_in_user）
         SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", requireActivity().MODE_PRIVATE);
         username = prefs.getString("logged_in_user", null);
 
-        // spinner
+        // spinner 初始化（确保 strings.xml 中有 type_array 和 category_array）
         ArrayAdapter<CharSequence> typeAdapter = ArrayAdapter.createFromResource(requireContext(),
                 R.array.type_array, android.R.layout.simple_spinner_item);
         typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -81,9 +79,9 @@ public class RecordFragment extends Fragment {
             }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
         });
 
-        adapter = new RecordAdapter();
-        rvRecords.setLayoutManager(new LinearLayoutManager(requireContext()));
-        rvRecords.setAdapter(adapter);
+        // 适配器（初始空列表）
+        adapter = new RecordAdapter(requireContext(), new ArrayList<>());
+        lvRecords.setAdapter(adapter);
 
         btnSave.setOnClickListener(view -> saveRecord());
 

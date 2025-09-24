@@ -1,56 +1,75 @@
 package com.example.myapp4;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
-public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.VH> {
+public class RecordAdapter extends BaseAdapter {
+    private Context context;
+    private List<Record> recordList;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
 
-    private List<Record> records = new ArrayList<>();
-    private SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-
-    @NonNull
-    @Override
-    public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_record, parent, false);
-        return new VH(v);
+    public RecordAdapter(Context context, List<Record> recordList) {
+        this.context = context;
+        this.recordList = recordList;
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull VH holder, int position) {
-        Record r = records.get(position);
-        String amt = String.format(Locale.getDefault(), "%.2f", r.amount);
-        if ("Expense".equalsIgnoreCase(r.type) || "支出".equalsIgnoreCase(r.type)) holder.tvAmount.setText("-" + amt);
-        else holder.tvAmount.setText(amt);
-
-        holder.tvType.setText(r.type);
-        holder.tvCategory.setText(r.category + (r.note != null && !r.note.isEmpty() ? " · " + r.note : ""));
-        holder.tvDate.setText(fmt.format(new Date(r.timestamp)));
-    }
-
-    @Override
-    public int getItemCount() {
-        return records.size();
-    }
-
-    public void setRecords(List<Record> list) {
-        this.records = list;
+    public void setRecords(List<Record> newRecords) {
+        this.recordList = newRecords;
         notifyDataSetChanged();
     }
 
-    static class VH extends RecyclerView.ViewHolder {
-        TextView tvAmount, tvCategory, tvDate, tvType;
-        VH(View itemView) {
-            super(itemView);
-            tvAmount = itemView.findViewById(R.id.tvAmount);
-            tvCategory = itemView.findViewById(R.id.tvCategory);
-            tvDate = itemView.findViewById(R.id.tvDate);
-            tvType = itemView.findViewById(R.id.tvType);
+    @Override
+    public int getCount() {
+        return recordList == null ? 0 : recordList.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return recordList.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return recordList.get(position).getId();
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder vh;
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_record, parent, false);
+            vh = new ViewHolder();
+            vh.tvAmount = convertView.findViewById(R.id.tvAmount);
+            vh.tvType = convertView.findViewById(R.id.tvType);
+            vh.tvCategory = convertView.findViewById(R.id.tvCategory);
+            vh.tvDate = convertView.findViewById(R.id.tvDate);
+            vh.tvNote = convertView.findViewById(R.id.tvNote);
+            convertView.setTag(vh);
+        } else {
+            vh = (ViewHolder) convertView.getTag();
         }
+
+        Record r = recordList.get(position);
+        vh.tvAmount.setText(String.format(Locale.getDefault(), "金额: %.2f", r.getAmount()));
+        vh.tvType.setText("类型: " + (r.getType() == null ? "" : r.getType()));
+        vh.tvCategory.setText("类别: " + (r.getCategory() == null ? "" : r.getCategory()));
+        vh.tvNote.setText("备注: " + (r.getNote() == null ? "" : r.getNote()));
+        String dateStr = sdf.format(new Date(r.getTimestamp()));
+        vh.tvDate.setText("日期: " + dateStr);
+
+        return convertView;
+    }
+
+    static class ViewHolder {
+        TextView tvAmount, tvType, tvCategory, tvDate, tvNote;
     }
 }

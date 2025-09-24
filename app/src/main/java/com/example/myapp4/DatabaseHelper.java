@@ -99,7 +99,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    // 记录相关
+    // 记录相关 CRUD
     public long insertRecord(String username, long timestamp, double amount, String type, String category, String note) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues v = new ContentValues();
@@ -115,5 +115,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Cursor getRecordsForUser(String username) {
         SQLiteDatabase db = getReadableDatabase();
         return db.query(TABLE_RECORDS, null, COLUMN_RECORD_USER + "=?", new String[]{username}, null, null, COLUMN_RECORD_TIMESTAMP + " DESC");
+    }
+
+    public int updateRecord(long id, double amount, String type, String category, String note) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues v = new ContentValues();
+        v.put(COLUMN_RECORD_AMOUNT, amount);
+        v.put(COLUMN_RECORD_TYPE, type);
+        v.put(COLUMN_RECORD_CATEGORY, category);
+        v.put(COLUMN_RECORD_NOTE, note);
+        return db.update(TABLE_RECORDS, v, COLUMN_RECORD_ID + "=?", new String[]{String.valueOf(id)});
+    }
+
+    public int deleteRecord(long id) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete(TABLE_RECORDS, COLUMN_RECORD_ID + "=?", new String[]{String.valueOf(id)});
     }
 }
