@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApp4">
         <activity
+            android:name=".fragments.QueryFragment"
+            android:exported="false" />
+        <activity
             android:name=".StatsFragment"
             android:exported="false" />
         <activity

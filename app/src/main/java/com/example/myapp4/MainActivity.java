@@ -4,9 +4,10 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import com.example.myapp4.fragments.LedgerFragment;
+
 import com.example.myapp4.fragments.RecordFragment;
 import com.example.myapp4.fragments.StatsFragment;
+import com.example.myapp4.fragments.QueryFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
             if (id == R.id.nav_record) {
                 fragment = new RecordFragment();
             } else if (id == R.id.nav_ledger) {
-                fragment = new LedgerFragment();
+                fragment = new QueryFragment();
             } else if (id == R.id.nav_stats) {
                 fragment = new StatsFragment();
             }

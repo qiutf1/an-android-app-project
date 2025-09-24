@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -131,5 +132,49 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public int deleteRecord(long id) {
         SQLiteDatabase db = getWritableDatabase();
         return db.delete(TABLE_RECORDS, COLUMN_RECORD_ID + "=?", new String[]{String.valueOf(id)});
+    }
+
+    // 新增：按条件查询记录
+    public Cursor queryRecordsFiltered(String username,
+                                       Long startTimestamp, Long endTimestamp,
+                                       String type, String category,
+                                       Double minAmount, Double maxAmount) {
+        SQLiteDatabase db = getReadableDatabase();
+        StringBuilder sel = new StringBuilder();
+        ArrayList<String> args = new ArrayList<>();
+
+        // 必须按用户筛
+        sel.append(COLUMN_RECORD_USER).append("=?");
+        args.add(username);
+
+        if (startTimestamp != null && endTimestamp != null) {
+            sel.append(" AND ").append(COLUMN_RECORD_TIMESTAMP).append(" BETWEEN ? AND ?");
+            args.add(String.valueOf(startTimestamp));
+            args.add(String.valueOf(endTimestamp));
+        }
+
+        if (type != null && !type.equals("全部")) {
+            sel.append(" AND ").append(COLUMN_RECORD_TYPE).append("=?");
+            args.add(type);
+        }
+
+        if (category != null && !category.equals("全部")) {
+            sel.append(" AND ").append(COLUMN_RECORD_CATEGORY).append("=?");
+            args.add(category);
+        }
+
+        if (minAmount != null) {
+            sel.append(" AND ").append(COLUMN_RECORD_AMOUNT).append(">=?");
+            args.add(String.valueOf(minAmount));
+        }
+
+        if (maxAmount != null) {
+            sel.append(" AND ").append(COLUMN_RECORD_AMOUNT).append("<=?");
+            args.add(String.valueOf(maxAmount));
+        }
+
+        String[] selArgs = args.toArray(new String[0]);
+        // 按时间降序
+        return db.query(TABLE_RECORDS, null, sel.toString(), selArgs, null, null, COLUMN_RECORD_TIMESTAMP + " DESC");
     }
 }

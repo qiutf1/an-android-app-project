@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="12dp">
+
+    <!-- 顶部：应用名 + 用户头像 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:background="#EEEEEE">
+
+        <TextView
+            android:id="@+id/tvAppName"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="思思记账"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/ivAvatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_avatar_default"
+            android:scaleType="centerCrop" />
+    </LinearLayout>
+
+    <!-- 筛选条件区 -->
+    <LinearLayout
+        android:id="@+id/filterBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="#DDDDDD">
+
+        <!-- 左边：年月 + 所有日期 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2025-09"
+                android:textSize="16sp"
+                android:padding="4dp" />
+
+            <CheckBox
+                android:id="@+id/cbAllDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="所有日期"
+                android:checked="true" />
+        </LinearLayout>
+
+        <!-- 右边：类型 + 类别 -->
+        <TextView
+            android:id="@+id/tvTypeCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="全部：所有类别"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:background="@drawable/bg_round_rect"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <!-- 金额范围查询 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="金额范围：" />
+
+        <EditText
+            android:id="@+id/etMinAmount"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint="最低金额"
+            android:inputType="numberDecimal"
+            android:layout_marginStart="4dp" />
+
+        <EditText
+            android:id="@+id/etMaxAmount"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint="最高金额"
+            android:inputType="numberDecimal"
+            android:layout_marginStart="4dp" />
+
+        <ImageView
+            android:id="@+id/ivSearchAmount"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@android:drawable/ic_menu_search"
+            android:padding="4dp" />
+    </LinearLayout>
+
+    <!-- 查询结果 -->
+    <ListView
+        android:id="@+id/lvResults"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp" />
+</LinearLayout>

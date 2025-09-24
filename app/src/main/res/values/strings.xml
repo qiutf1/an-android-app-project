@@ -1,5 +1,21 @@
 <resources>
     <string name="app_name">思思记账</string>
+    
+    <string-array name="type_array_with_all">
+        <item>全部</item>
+        <item>收入</item>
+        <item>支出</item>
+    </string-array>
+
+    <string-array name="category_array_with_all">
+        <item>所有类别</item>
+        <item>工资</item>
+        <item>餐饮</item>
+        <item>交通</item>
+        <item>购物</item>
+        <item>娱乐</item>
+        <item>其他</item>
+    </string-array>
 
     <string-array name="type_array">
         <item>收入</item>
@@ -7,6 +23,7 @@
     </string-array>
 
     <string-array name="category_array">
+        <item>全部</item>
         <item>工资</item>
         <item>餐饮</item>
         <item>交通</item>
