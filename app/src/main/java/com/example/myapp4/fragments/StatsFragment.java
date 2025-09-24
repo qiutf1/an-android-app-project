@@ -1,5 +1,6 @@
 package com.example.myapp4.fragments;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 
@@ -10,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.myapp4.DatabaseHelper;
 import com.example.myapp4.R;
@@ -25,6 +28,8 @@ import java.util.List;
 
 public class StatsFragment extends Fragment {
 
+    private ImageView ivAvatar;
+    private TextView tvAppName;
     private PieChart pieChart;
     private DatabaseHelper dbHelper;
 
@@ -35,6 +40,16 @@ public class StatsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_stats, container, false);
 
+        // 绑定主题栏（头像 + 应用名）
+        ivAvatar = v.findViewById(R.id.ivAvatar);
+        tvAppName = v.findViewById(R.id.tvAppName);
+
+        SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", requireActivity().MODE_PRIVATE);
+        int avatarRes = prefs.getInt("logged_in_avatar", R.drawable.ic_avatar_default);
+        ivAvatar.setImageResource(avatarRes);
+        tvAppName.setText("思思记账");
+
+        // 饼图
         pieChart = v.findViewById(R.id.pieChart);
         dbHelper = new DatabaseHelper(requireContext());
 

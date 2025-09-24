@@ -19,7 +19,6 @@ import com.example.myapp4.R;
 import com.example.myapp4.Record;
 import com.example.myapp4.RecordAdapter;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class QueryFragment extends Fragment {
@@ -54,9 +53,17 @@ public class QueryFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_query, container, false);
 
+        // 绑定顶部主题栏
         ivAvatar = v.findViewById(R.id.ivAvatar);
         tvAppName = v.findViewById(R.id.tvAppName);
 
+        SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", requireActivity().MODE_PRIVATE);
+        username = prefs.getString("logged_in_user", null);
+        int avatarRes = prefs.getInt("logged_in_avatar", R.drawable.ic_avatar_default);
+        ivAvatar.setImageResource(avatarRes);
+        tvAppName.setText("思思记账");
+
+        // 绑定查询相关控件
         tvMonth = v.findViewById(R.id.tvMonth);
         cbAllDate = v.findViewById(R.id.cbAllDate);
         tvTypeCategory = v.findViewById(R.id.tvTypeCategory);
@@ -68,11 +75,6 @@ public class QueryFragment extends Fragment {
         lvResults = v.findViewById(R.id.lvResults);
 
         dbHelper = new DatabaseHelper(requireContext());
-
-        SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", requireActivity().MODE_PRIVATE);
-        username = prefs.getString("logged_in_user", null);
-        int avatarRes = prefs.getInt("logged_in_avatar", R.drawable.ic_avatar_default);
-        ivAvatar.setImageResource(avatarRes);
 
         // 初始化年月
         Calendar c = Calendar.getInstance();
@@ -95,7 +97,7 @@ public class QueryFragment extends Fragment {
                         loadFilteredRecords();
                     },
                     cc.get(Calendar.YEAR), cc.get(Calendar.MONTH), cc.get(Calendar.DAY_OF_MONTH));
-            // 隐藏“日”，只用年月（简单方式：忽略返回的 d）
+            // 这里只取年月，忽略日
             dp.show();
         });
 

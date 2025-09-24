@@ -24,6 +24,7 @@ import java.util.*;
 public class RecordFragment extends Fragment {
 
     private ImageView ivAvatar;
+    private TextView tvAppName;
     private TextView tabAll, tabExpense, tabIncome;
     private ListView lvRecords;
     private FloatingActionButton fabAdd;
@@ -41,7 +42,17 @@ public class RecordFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_record, container, false);
 
+        // 绑定顶部主题栏
         ivAvatar = v.findViewById(R.id.ivAvatar);
+        tvAppName = v.findViewById(R.id.tvAppName);
+
+        SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", requireActivity().MODE_PRIVATE);
+        username = prefs.getString("logged_in_user", null);
+        int avatarRes = prefs.getInt("logged_in_avatar", R.drawable.ic_avatar_default);
+        ivAvatar.setImageResource(avatarRes);
+        tvAppName.setText("思思记账");
+
+        // 绑定其他控件
         tabAll = v.findViewById(R.id.tabAll);
         tabExpense = v.findViewById(R.id.tabExpense);
         tabIncome = v.findViewById(R.id.tabIncome);
@@ -49,12 +60,6 @@ public class RecordFragment extends Fragment {
         fabAdd = v.findViewById(R.id.fabAdd);
 
         dbHelper = new DatabaseHelper(requireContext());
-
-        // 获取登录用户
-        SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", requireActivity().MODE_PRIVATE);
-        username = prefs.getString("logged_in_user", null);
-        int avatarRes = prefs.getInt("logged_in_avatar", R.drawable.ic_avatar_default);
-        ivAvatar.setImageResource(avatarRes);
 
         // 适配器
         adapter = new RecordAdapter(requireContext(), new ArrayList<>());

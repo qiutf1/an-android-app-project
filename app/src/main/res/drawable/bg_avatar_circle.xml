@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#DDDDDD"/> <!-- 背景颜色，可以改成透明或你喜欢的颜色 -->
+    <size android:width="48dp" android:height="48dp"/> <!-- 保证是圆形 -->
+</shape>
