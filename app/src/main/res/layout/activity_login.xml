@@ -38,6 +38,8 @@
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:hint="请输入用户名"
+        android:inputType="textPersonName"
+        android:singleLine="true"
         android:textColor="#333333"
         android:background="@drawable/edit_text_background"
         android:paddingStart="16dp"
@@ -47,6 +49,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp" />
+
 
     <!-- 密码标签 -->
     <TextView

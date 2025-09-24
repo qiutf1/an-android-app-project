@@ -59,7 +59,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="备注"
+        android:inputType="textMultiLine"
+        android:imeOptions="actionDone"
+        android:gravity="top|start"
+        android:lines="3"
         android:layout_marginTop="8dp"/>
+
 
     <!-- 保存按钮 -->
     <Button
