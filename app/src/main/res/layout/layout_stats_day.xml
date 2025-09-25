@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- 顶部日期显示 + 按钮 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/tvDayMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2025-09-25"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginEnd="12dp"/>
+
+        <Button
+            android:id="@+id/btnPickDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="选择日期"/>
+    </LinearLayout>
+
+    <!-- 收入/支出/结余 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:paddingBottom="12dp">
+
+        <TextView
+            android:id="@+id/tvIncome"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="收入: 0"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/tvExpense"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="支出: 0"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/tvBalance"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="结余: 0"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <!-- 饼图 -->
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieChartDay"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+</LinearLayout>

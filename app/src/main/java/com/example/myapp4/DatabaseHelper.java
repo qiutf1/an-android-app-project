@@ -177,4 +177,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // 按时间降序
         return db.query(TABLE_RECORDS, null, sel.toString(), selArgs, null, null, COLUMN_RECORD_TIMESTAMP + " DESC");
     }
+    // ========== 年视图：每月结余 ==========
+    public Cursor getMonthlyBalanceForYear(String username, int yearStartTs, int yearEndTs) {
+        SQLiteDatabase db = getReadableDatabase();
+        // SQLite 没有直接的 YEAR/MONTH 函数，所以我们用 strftime('%m', timestamp/1000, 'unixepoch') 提取月份
+        String sql = "SELECT strftime('%m', " + COLUMN_RECORD_TIMESTAMP + "/1000, 'unixepoch') AS month, " +
+                "SUM(CASE WHEN " + COLUMN_RECORD_TYPE + "='收入' THEN " + COLUMN_RECORD_AMOUNT + " ELSE 0 END) AS income, " +
+                "SUM(CASE WHEN " + COLUMN_RECORD_TYPE + "='支出' THEN " + COLUMN_RECORD_AMOUNT + " ELSE 0 END) AS expense " +
+                "FROM " + TABLE_RECORDS +
+                " WHERE " + COLUMN_RECORD_USER + "=? AND " + COLUMN_RECORD_TIMESTAMP + " BETWEEN ? AND ? " +
+                "GROUP BY month ORDER BY month ASC";
+        return db.rawQuery(sql, new String[]{username, String.valueOf(yearStartTs), String.valueOf(yearEndTs)});
+    }
+
+    // ========== 月视图：每日结余 ==========
+    public Cursor getDailyBalanceForMonth(String username, long monthStartTs, long monthEndTs) {
+        SQLiteDatabase db = getReadableDatabase();
+        String sql = "SELECT strftime('%d', " + COLUMN_RECORD_TIMESTAMP + "/1000, 'unixepoch') AS day, " +
+                "SUM(CASE WHEN " + COLUMN_RECORD_TYPE + "='收入' THEN " + COLUMN_RECORD_AMOUNT + " ELSE 0 END) AS income, " +
+                "SUM(CASE WHEN " + COLUMN_RECORD_TYPE + "='支出' THEN " + COLUMN_RECORD_AMOUNT + " ELSE 0 END) AS expense " +
+                "FROM " + TABLE_RECORDS +
+                " WHERE " + COLUMN_RECORD_USER + "=? AND " + COLUMN_RECORD_TIMESTAMP + " BETWEEN ? AND ? " +
+                "GROUP BY day ORDER BY day ASC";
+        return db.rawQuery(sql, new String[]{username, String.valueOf(monthStartTs), String.valueOf(monthEndTs)});
+    }
+
+    // ========== 日视图：某日分类饼图 ==========
+    public Cursor getCategorySummaryForDay(String username, long dayStartTs, long dayEndTs) {
+        SQLiteDatabase db = getReadableDatabase();
+        String sql = "SELECT " + COLUMN_RECORD_CATEGORY + " AS category, " +
+                "SUM(" + COLUMN_RECORD_AMOUNT + ") AS total, " +
+                COLUMN_RECORD_TYPE + " AS type " +
+                "FROM " + TABLE_RECORDS +
+                " WHERE " + COLUMN_RECORD_USER + "=? AND " + COLUMN_RECORD_TIMESTAMP + " BETWEEN ? AND ? " +
+                "GROUP BY category, type";
+        return db.rawQuery(sql, new String[]{username, String.valueOf(dayStartTs), String.valueOf(dayEndTs)});
+    }
+
 }
