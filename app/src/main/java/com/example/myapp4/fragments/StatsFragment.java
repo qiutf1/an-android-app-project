@@ -43,6 +43,7 @@ public class StatsFragment extends Fragment {
 
     private ImageView ivAvatar;
     private TextView tvAppName;
+    private TextView tvAccountName; // ✅ 新增账号显示
     private RadioGroup rgViewType;
     private FrameLayout statsContainer;
     private DatabaseHelper dbHelper;
@@ -60,6 +61,7 @@ public class StatsFragment extends Fragment {
 
         ivAvatar = root.findViewById(R.id.ivAvatar);
         tvAppName = root.findViewById(R.id.tvAppName);
+        tvAccountName = root.findViewById(R.id.tvAccountName); // ✅ 绑定账号 TextView
         rgViewType = root.findViewById(R.id.rgViewType);
         statsContainer = root.findViewById(R.id.statsContainer);
 
@@ -68,8 +70,10 @@ public class StatsFragment extends Fragment {
         SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", getActivity().MODE_PRIVATE);
         username = prefs.getString("logged_in_user", null);
         int avatarRes = prefs.getInt("logged_in_avatar", R.drawable.ic_avatar_default);
+
         ivAvatar.setImageResource(avatarRes);
-        tvAppName.setText(getString(R.string.app_name));
+        tvAppName.setText("思思记账");
+        tvAccountName.setText("账号: " + (username == null ? "未登录" : username));
 
         // 当前日期
         Calendar c = Calendar.getInstance();
@@ -102,7 +106,6 @@ public class StatsFragment extends Fragment {
 
         TextView tvYear = yearView.findViewById(R.id.tvYear);
 
-        // 安全获取 btnPickYear（运行时通过名字查找资源 id，避免编译期未定义出错）
         int pickYearId = getResources().getIdentifier("btnPickYear", "id", requireContext().getPackageName());
         View btnPickYear = pickYearId != 0 ? yearView.findViewById(pickYearId) : null;
         if (btnPickYear != null) {

@@ -25,6 +25,7 @@ public class QueryFragment extends Fragment {
 
     private ImageView ivAvatar;
     private TextView tvAppName;
+    private TextView tvAccountName; // 新增账号显示
 
     private TextView tvMonth;
     private CheckBox cbAllDate;
@@ -56,12 +57,15 @@ public class QueryFragment extends Fragment {
         // 绑定顶部主题栏
         ivAvatar = v.findViewById(R.id.ivAvatar);
         tvAppName = v.findViewById(R.id.tvAppName);
+        tvAccountName = v.findViewById(R.id.tvAccountName);
 
         SharedPreferences prefs = requireActivity().getSharedPreferences("app_prefs", requireActivity().MODE_PRIVATE);
         username = prefs.getString("logged_in_user", null);
         int avatarRes = prefs.getInt("logged_in_avatar", R.drawable.ic_avatar_default);
+
         ivAvatar.setImageResource(avatarRes);
         tvAppName.setText("思思记账");
+        tvAccountName.setText("账号: " + (username == null ? "未登录" : username));
 
         // 绑定查询相关控件
         tvMonth = v.findViewById(R.id.tvMonth);
