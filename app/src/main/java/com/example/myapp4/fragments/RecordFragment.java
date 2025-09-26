@@ -25,10 +25,10 @@ public class RecordFragment extends Fragment {
 
     private ImageView ivAvatar;
     private TextView tvAppName;
-    private TextView tvAccountName; // ✅ 新增账号显示
+    private TextView tvAccountName;
     private TextView tabAll, tabExpense, tabIncome;
     private ListView lvRecords;
-    private FloatingActionButton fabAdd;
+    private FloatingActionButton fabAdd; // ✅ 改为悬浮按钮
 
     private RecordAdapter adapter;
     private DatabaseHelper dbHelper;
@@ -43,7 +43,7 @@ public class RecordFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_record, container, false);
 
-        // 绑定顶部主题栏
+        // 顶部栏
         ivAvatar = v.findViewById(R.id.ivAvatar);
         tvAppName = v.findViewById(R.id.tvAppName);
         tvAccountName = v.findViewById(R.id.tvAccountName);
@@ -56,25 +56,25 @@ public class RecordFragment extends Fragment {
         tvAppName.setText("思思记账");
         tvAccountName.setText("账号: " + (username == null ? "未登录" : username));
 
-        // 绑定其他控件
+        // Tab
         tabAll = v.findViewById(R.id.tabAll);
         tabExpense = v.findViewById(R.id.tabExpense);
         tabIncome = v.findViewById(R.id.tabIncome);
+
+        // 列表 & 悬浮按钮
         lvRecords = v.findViewById(R.id.lvRecords);
         fabAdd = v.findViewById(R.id.fabAdd);
 
         dbHelper = new DatabaseHelper(requireContext());
-
-        // 适配器
         adapter = new RecordAdapter(requireContext(), new ArrayList<>());
         lvRecords.setAdapter(adapter);
 
-        // Tab 切换
+        // Tab 点击事件
         tabAll.setOnClickListener(v1 -> { currentFilter = "全部"; applyFilter(); });
         tabExpense.setOnClickListener(v1 -> { currentFilter = "支出"; applyFilter(); });
         tabIncome.setOnClickListener(v1 -> { currentFilter = "收入"; applyFilter(); });
 
-        // 新增账单
+        // 悬浮按钮：新增账单
         fabAdd.setOnClickListener(v1 -> showAddOrEditDialog(null));
 
         // 点击修改
@@ -99,7 +99,6 @@ public class RecordFragment extends Fragment {
         });
 
         loadRecords();
-
         return v;
     }
 
@@ -126,7 +125,7 @@ public class RecordFragment extends Fragment {
         }).start();
     }
 
-    /** 应用筛选条件 */
+    /** 筛选 */
     private void applyFilter() {
         List<Record> filtered = new ArrayList<>();
         for (Record r : allRecords) {
@@ -136,7 +135,7 @@ public class RecordFragment extends Fragment {
         adapter.setRecords(filtered);
     }
 
-    /** 弹出添加或编辑对话框 */
+    /** 添加/编辑记录 */
     private void showAddOrEditDialog(@Nullable Record record) {
         View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_add_record, null);
         EditText etAmount = dialogView.findViewById(R.id.etAmount);
@@ -146,19 +145,16 @@ public class RecordFragment extends Fragment {
         TextView tvDate = dialogView.findViewById(R.id.tvDate);
         Button btnPickDate = dialogView.findViewById(R.id.btnPickDate);
 
-        // 类型选择
         ArrayAdapter<CharSequence> typeAdapter = ArrayAdapter.createFromResource(requireContext(),
                 R.array.type_array, android.R.layout.simple_spinner_item);
         typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spType.setAdapter(typeAdapter);
 
-        // 类别选择
         ArrayAdapter<CharSequence> catAdapter = ArrayAdapter.createFromResource(requireContext(),
                 R.array.category_array, android.R.layout.simple_spinner_item);
         catAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCategory.setAdapter(catAdapter);
 
-        // 用数组包装，避免 lambda final 限制
         final long[] selectedTs = {System.currentTimeMillis()};
         tvDate.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date(selectedTs[0])));
 
@@ -173,7 +169,6 @@ public class RecordFragment extends Fragment {
             }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
         });
 
-        // 如果是修改，填充旧数据
         if (record != null) {
             etAmount.setText(String.valueOf(record.getAmount()));
             etNote.setText(record.getNote());

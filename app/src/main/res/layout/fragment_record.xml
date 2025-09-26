@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <!-- 顶部栏 -->
     <include
+        android:id="@+id/headerLayout"
         layout="@layout/layout_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
+        android:layout_height="wrap_content" />
 
     <!-- 分类 Tab -->
     <LinearLayout
         android:id="@+id/filterTabs"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:layout_below="@id/headerLayout"
         android:orientation="horizontal"
         android:gravity="center"
         android:background="#F5F5F5">
@@ -24,36 +24,39 @@
         <TextView
             android:id="@+id/tabAll"
             style="@style/TabItemStyle"
-            android:text="全部"/>
+            android:text="全部" />
 
         <TextView
             android:id="@+id/tabExpense"
             style="@style/TabItemStyle"
-            android:text="支出"/>
+            android:text="支出" />
 
         <TextView
             android:id="@+id/tabIncome"
             style="@style/TabItemStyle"
-            android:text="收入"/>
+            android:text="收入" />
     </LinearLayout>
 
     <!-- 账单列表 -->
     <ListView
         android:id="@+id/lvRecords"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:layout_below="@id/filterTabs"
         android:divider="@android:color/transparent"
         android:dividerHeight="8dp"
-        android:padding="8dp"/>
+        android:padding="8dp" />
 
     <!-- 悬浮按钮 -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_add"
-        app:backgroundTint="@color/purple_200"/>
-</LinearLayout>
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="20dp"
+        app:backgroundTint="@color/purple_200"
+        app:srcCompat="@drawable/ic_add"
+        app:tint="@android:color/white"
+        android:contentDescription="新增账目" />
+</RelativeLayout>
