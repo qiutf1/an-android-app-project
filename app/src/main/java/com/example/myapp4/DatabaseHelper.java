@@ -101,6 +101,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
+    // ✅ 新增方法：获取用户头像
+    public int getUserAvatar(String username) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.query(TABLE_USERS, new String[]{COLUMN_AVATAR},
+                COLUMN_USERNAME + "=?", new String[]{username},
+                null, null, null);
+        if (c != null && c.moveToFirst()) {
+            int avatar = c.getInt(c.getColumnIndexOrThrow(COLUMN_AVATAR));
+            c.close();
+            return avatar;
+        }
+        if (c != null) c.close();
+        return R.drawable.ic_avatar_default; // 默认头像
+    }
+
     // 记录相关 CRUD
     public long insertRecord(String username, long timestamp, double amount, String type, String category, String note) {
         SQLiteDatabase db = getWritableDatabase();

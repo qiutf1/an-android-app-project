@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (id == R.id.nav_record) {
                 fragment = new RecordFragment();
-            } else if (id == R.id.nav_ledger) {
+            } else if (id == R.id.nav_query) {
                 fragment = new QueryFragment();
             } else if (id == R.id.nav_stats) {
                 fragment = new StatsFragment();

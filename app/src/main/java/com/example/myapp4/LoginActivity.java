@@ -2,8 +2,6 @@ package com.example.myapp4;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -69,13 +67,20 @@ public class LoginActivity extends AppCompatActivity {
 
                 boolean ok = dbHelper.checkUserPassword(username, password);
                 if (ok) {
-                    // 保存登录用户名
+                    // ✅ 获取用户头像
+                    int avatarRes = dbHelper.getUserAvatar(username);
+
+                    // ✅ 保存用户名和头像
                     SharedPreferences prefs = getSharedPreferences("app_prefs", MODE_PRIVATE);
-                    prefs.edit().putString("logged_in_user", username).apply();
+                    prefs.edit()
+                            .putString("logged_in_user", username)
+                            .putInt("logged_in_avatar", avatarRes)
+                            .apply();
 
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.putExtra("username", username);
                     startActivity(intent);
+                    finish();
                 } else {
                     Toast.makeText(LoginActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
                 }
